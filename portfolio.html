@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | RAJ IMAGEN</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+.port-card-video { position:relative; overflow:hidden; aspect-ratio:1; }
+.port-video-bg {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover;
+  transition:transform .55s cubic-bezier(.4,0,.2,1);
+}
+.port-card-video:hover .port-video-bg { transform:scale(1.08); }
+.port-play-btn {
+  position:absolute; inset:0; display:flex;
+  align-items:center; justify-content:center;
+  font-size:52px; color:rgba(255,255,255,0.85);
+  text-shadow:0 0 24px rgba(255,0,0,0.8);
+  transition:opacity .3s;
+  z-index:2;
+  pointer-events:none;
+}
+.port-card-video:hover .port-play-btn { opacity:0; }
+.port-card-video:hover .port-hover { opacity:1; z-index:3; }
+
+/* ─── Real Image Cards ─── */
+.port-card-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  cursor: pointer;
+}
+.port-card-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .55s cubic-bezier(.4,0,.2,1), filter .35s;
+  filter: brightness(0.88);
+}
+.port-card-img:hover img { transform: scale(1.08); filter: brightness(0.55); }
+.port-card-img .port-hover { transition: opacity .35s; }
+.port-card-img:hover .port-hover { opacity: 1; }
+
+/* Logo/image card with white bg */
+.port-card-logo img { object-fit: contain; background: #fff; padding: 12%; filter: brightness(1); }
+.port-card-logo:hover img { filter: brightness(0.7); }
+
+.port-card-yt {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+}
+.port-card-yt img.yt-thumb {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+  filter: brightness(0.75);
+}
+.port-card-yt:hover img.yt-thumb { transform: scale(1.08); filter: brightness(0.55); }
+.port-card-yt .yt-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 58px; color: #fff;
+  text-shadow: 0 0 30px rgba(255,0,0,1);
+  transition: transform .3s;
+  z-index: 2;
+}
+.port-card-yt:hover .yt-play-btn { transform: scale(1.15); }
+.port-card-yt .yt-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(255,0,0,0.85);
+  color: #fff; font-size: 10px;
+  font-family: var(--ff-c); letter-spacing: 1.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 3px;
+  z-index: 3;
+  text-transform: uppercase;
+}
+.port-card-yt .port-hover {
+  opacity: 0;
+  transition: opacity .35s;
+}
+.port-card-yt:hover .port-hover { opacity: 1; z-index: 4; }
+
+/* YouTube Modal */
+#ytModal {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.93);
+  align-items: center; justify-content: center;
+}
+#ytModal.active { display: flex; }
+#ytModalInner {
+  position: relative; max-width: 900px; width: 94%;
+  border: 2px solid #ff0000;
+  box-shadow: 0 0 60px rgba(255,0,0,0.4);
+}
+#ytModalInner iframe {
+  width: 100%; aspect-ratio: 16/9; display: block; background: #000;
+}
+#ytModalClose {
+  position: absolute; top: -46px; right: 0;
+  background: none; border: none; color: #fff;
+  font-size: 32px; cursor: pointer; line-height: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">RAJ IMAGEN</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-txt">Loading Experience...</div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg" id="mainNav">
+  <div class="container-fluid px-4 px-lg-5">
+    <a class="navbar-brand p-0" href="index.html">
+    <img src="assets/images/logo 1.png" width="250"  alt=""/> </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end gap-4" id="navMenu">
+      <ul class="navbar-nav gap-1 align-items-lg-center me-4">
+        <li class="nav-item"><a class="nav-link-ri" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link-ri" href="about.html">About Me</a></li>
+        <li class="nav-item"><a class="nav-link-ri active" href="portfolio.html">Portfolio</a></li>
+        <li class="nav-item"><a class="nav-link-ri" href="contact.html">Contact</a></li>
+      </ul>
+      <a class="btn-hire" href="contact.html">HIRE ME</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="page-banner">
+  <div class="pb-bg" style="background-image:url('assets/images/banner.png')"></div>
+  <div class="pb-line pb-line-1"></div><div class="pb-line pb-line-2"></div>
+  <div class="pb-ghost">WORK</div>
+  <div class="pb-slash"></div>
+  <div class="pb-inner"><div class="bcrumb">Home <span>/ Portfolio</span></div><h1 class="pb-title">MY <span>PORTFOLIO</span></h1></div>
+</div>
+
+<section class="ri-sec bg-d1">
+  <div class="container-fluid px-4 px-lg-5">
+    <ul class="nav port-tabs flex-wrap mb-5" role="tablist">
+      <li class="nav-item" role="presentation"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#pf-all" role="tab" href="#">All</a></li>
+      <li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#pf-logo" role="tab" href="#">Logo Design</a></li>
+      <li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#pf-poster" role="tab" href="#">Posters</a></li>
+      <li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#pf-an" role="tab" href="#">Animation</a></li>
+      <li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#pf-mg" role="tab" href="#">Motion</a></li>
+      <li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#pf-vx" role="tab" href="#">VFX</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="pf-all" role="tabpanel">
+        <div class="row g-2">
+
+          <!-- Logo 1: R+Knife -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="port-card port-card-img port-card-logo">
+              <img src="assets/images/logo_1.jpg" alt="R Knife Logo">
+              <div class="port-hover"><div class="ph-title">R Knife Logo</div><div class="ph-cat">Logo Design · Illustrator</div></div>
+            </div>
+            <div class="port-lbl">Logo Design</div>
+          </div>
+
+          <!-- Logo 2: Brown Eagle -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="port-card port-card-img port-card-logo">
+              <img src="assets/images/logo2.jpg" alt="Eagle Logo">
+              <div class="port-hover"><div class="ph-title">Eagle Eye Logo</div><div class="ph-cat">Logo Design · Illustrator</div></div>
+            </div>
+            <div class="port-lbl">Logo Design</div>
+          </div>
+
+          <!-- Logo 3: Bird R -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="port-card port-card-img port-card-logo">
+              <img src="assets/images/logo_3.jpg" alt="Bird R Logo">
+              <div class="port-hover"><div class="ph-title">Bird R Logo</div><div class="ph-cat">Logo Design · Illustrator</div></div>
+            </div>
+            <div class="port-lbl">Logo Design</div>
+          </div>
+
+          <!-- Minimalist Poster 1: Yellow -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="port-card port-card-img">
+              <img src="assets/images/minimelist_poster_1.jpg" alt="Minimalist Poster 1">
+              <div class="port-hover"><div class="ph-title">Minimalist Poster</div><div class="ph-cat">Graphic Design · Illustrator</div></div>
+            </div>
+            <div class="port-lbl">Minimalist Poster</div>
+          </div>
+
+          <!-- Minimalist Poster 2: VISION -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="port-card port-card-img">
+              <img src="assets/images/minimelist_poster_2.jpg" alt="Vision Poster">
+              <div class="port-hover"><div class="ph-title">Vision Poster</div><div class="ph-cat">Graphic Design · Photoshop</div></div>
+            </div>
+            <div class="port-lbl">Vision Poster</div>
+          </div>
+
+          <!-- Minimalist Poster 3: B&W Camera Eye -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="port-card port-card-img">
+              <img src="assets/images/minimelist_poster_3.jpg" alt="Camera Eye Poster">
+              <div class="port-hover"><div class="ph-title">Camera Eye Poster</div><div class="ph-cat">Graphic Design · Photoshop</div></div>
+            </div>
+            <div class="port-lbl">Camera Poster</div>
+          </div>
+
+          <!-- 2D Animation Video -->
+          <div class="col-6 col-md-4 col-lg-3"><div class="port-card port-card-video wb8" data-video="assets/project/2d animate/animate_video_.mp4" onclick="openVideoModal(this)" style="cursor:pointer;"><video class="port-video-bg" src="assets/project/2d animate/animate_video_.mp4" muted loop playsinline></video><div class="port-play-btn"><i class="bi bi-play-circle-fill"></i></div><div class="port-hover"><div class="ph-title">2D Animation</div><div class="ph-cat">Character Animation</div></div></div><div class="port-lbl">2D Animation</div></div>
+
+          <!-- YouTube: Motion Graphics Short -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <a class="port-card port-card-yt" onclick="openYtModal('t2_c28Ie2mA', false); return false;" href="#">
+              <span class="yt-badge">&#9654; YouTube</span>
+              <img class="yt-thumb" src="https://img.youtube.com/vi/t2_c28Ie2mA/hqdefault.jpg" alt="Motion Graphics" loading="lazy">
+              <div class="yt-play-btn"><i class="bi bi-play-circle-fill"></i></div>
+              <div class="port-hover"><div class="ph-title">Motion Graphics</div><div class="ph-cat">Motion Graphics · Short</div></div>
+            </a>
+            <div class="port-lbl">Motion Graphics</div>
+          </div>
+
+          <!-- YouTube: Particle Video -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <a class="port-card port-card-yt" onclick="openYtModal('qsQpK8LhIHc', false); return false;" href="#">
+              <span class="yt-badge">&#9654; YouTube</span>
+              <img class="yt-thumb" src="https://img.youtube.com/vi/qsQpK8LhIHc/hqdefault.jpg" alt="Particle Motion" loading="lazy">
+              <div class="yt-play-btn"><i class="bi bi-play-circle-fill"></i></div>
+              <div class="port-hover"><div class="ph-title">Particle FX</div><div class="ph-cat">Motion Graphics · Particles</div></div>
+            </a>
+            <div class="port-lbl">Particle Motion</div>
+          </div>
+
+          <!-- YouTube: Green Screen VFX -->
+          <div class="col-6 col-md-4 col-lg-3">
+            <a class="port-card port-card-yt" onclick="openYtModal('FNWIcfEZhms', false); return false;" href="#">
+              <span class="yt-badge">&#9654; YouTube</span>
+              <img class="yt-thumb" src="https://img.youtube.com/vi/FNWIcfEZhms/hqdefault.jpg" alt="Green Screen VFX" loading="lazy">
+              <div class="yt-play-btn"><i class="bi bi-play-circle-fill"></i></div>
+              <div class="port-hover"><div class="ph-title">Green Screen VFX</div><div class="ph-cat">VFX · Compositing</div></div>
+            </a>
+            <div class="port-lbl">Green Screen VFX</div>
+          </div>
+
+        </div>
+      </div>
+      <!-- LOGO TAB -->
+      <div class="tab-pane fade" id="pf-logo" role="tabpanel"><div class="row g-2">
+        <div class="col-6 col-md-4">
+          <div class="port-card port-card-img port-card-logo"><img src="assets/images/logo_1.jpg" alt="R Knife Logo"><div class="port-hover"><div class="ph-title">R Knife Logo</div><div class="ph-cat">Logo Design</div></div></div>
+          <div class="port-lbl">R Knife Logo</div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="port-card port-card-img port-card-logo"><img src="assets/images/logo2.jpg" alt="Eagle Logo"><div class="port-hover"><div class="ph-title">Eagle Eye Logo</div><div class="ph-cat">Logo Design</div></div></div>
+          <div class="port-lbl">Eagle Eye Logo</div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="port-card port-card-img port-card-logo"><img src="assets/images/logo_3.jpg" alt="Bird R Logo"><div class="port-hover"><div class="ph-title">Bird R Logo</div><div class="ph-cat">Logo Design</div></div></div>
+          <div class="port-lbl">Bird R Logo</div>
+        </div>
+      </div></div>
+
+      <!-- POSTER TAB -->
+      <div class="tab-pane fade" id="pf-poster" role="tabpanel"><div class="row g-2">
+        <div class="col-6 col-md-4">
+          <div class="port-card port-card-img"><img src="assets/images/minimelist_poster_1.jpg" alt="Minimalist Poster 1"><div class="port-hover"><div class="ph-title">Minimalist Poster</div><div class="ph-cat">Graphic Design</div></div></div>
+          <div class="port-lbl">Minimalist Poster</div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="port-card port-card-img"><img src="assets/images/minimelist_poster_2.jpg" alt="Vision Poster"><div class="port-hover"><div class="ph-title">Vision Poster</div><div class="ph-cat">Graphic Design</div></div></div>
+          <div class="port-lbl">Vision Poster</div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="port-card port-card-img"><img src="assets/images/minimelist_poster_3.jpg" alt="Camera Eye Poster"><div class="port-hover"><div class="ph-title">Camera Eye Poster</div><div class="ph-cat">Graphic Design</div></div></div>
+          <div class="port-lbl">Camera Poster</div>
+        </div>
+      </div></div>
+
+      <!-- ANIMATION TAB -->
+      <div class="tab-pane fade" id="pf-an" role="tabpanel"><div class="row g-2">
+        <div class="col-6 col-md-4"><div class="port-card port-card-video wb8" data-video="assets/project/2d animate/animate_video_.mp4" onclick="openVideoModal(this)" style="cursor:pointer;"><video class="port-video-bg" src="assets/project/2d animate/animate_video_.mp4" muted loop playsinline></video><div class="port-play-btn"><i class="bi bi-play-circle-fill"></i></div><div class="port-hover"><div class="ph-title">2D Animation</div><div class="ph-cat">Character Animation</div></div></div><div class="port-lbl">2D Animation</div></div>
+      </div></div>
+
+      <!-- MOTION TAB -->
+      <div class="tab-pane fade" id="pf-mg" role="tabpanel"><div class="row g-2">
+        <div class="col-6 col-md-4">
+          <a class="port-card port-card-yt" onclick="openYtModal('t2_c28Ie2mA', false); return false;" href="#">
+            <span class="yt-badge">&#9654; YouTube</span>
+            <img class="yt-thumb" src="https://img.youtube.com/vi/t2_c28Ie2mA/hqdefault.jpg" alt="Motion Graphics" loading="lazy">
+            <div class="yt-play-btn"><i class="bi bi-play-circle-fill"></i></div>
+            <div class="port-hover"><div class="ph-title">Motion Graphics</div><div class="ph-cat">Motion Graphics · Short</div></div>
+          </a>
+          <div class="port-lbl">Motion Graphics</div>
+        </div>
+        <div class="col-6 col-md-4">
+          <a class="port-card port-card-yt" onclick="openYtModal('qsQpK8LhIHc', false); return false;" href="#">
+            <span class="yt-badge">&#9654; YouTube</span>
+            <img class="yt-thumb" src="https://img.youtube.com/vi/qsQpK8LhIHc/hqdefault.jpg" alt="Particle Motion" loading="lazy">
+            <div class="yt-play-btn"><i class="bi bi-play-circle-fill"></i></div>
+            <div class="port-hover"><div class="ph-title">Particle FX</div><div class="ph-cat">Motion Graphics · Particles</div></div>
+          </a>
+          <div class="port-lbl">Particle Motion</div>
+        </div>
+      </div></div>
+
+      <!-- VFX TAB -->
+      <div class="tab-pane fade" id="pf-vx" role="tabpanel"><div class="row g-2">
+        <div class="col-6 col-md-4">
+          <a class="port-card port-card-yt" onclick="openYtModal('FNWIcfEZhms', false); return false;" href="#">
+            <span class="yt-badge">&#9654; YouTube</span>
+            <img class="yt-thumb" src="https://img.youtube.com/vi/FNWIcfEZhms/hqdefault.jpg" alt="Green Screen VFX" loading="lazy">
+            <div class="yt-play-btn"><i class="bi bi-play-circle-fill"></i></div>
+            <div class="port-hover"><div class="ph-title">Green Screen VFX</div><div class="ph-cat">VFX · Compositing</div></div>
+          </a>
+          <div class="port-lbl">Green Screen VFX</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="text-center mt-5 reveal"><a href="contact.html" class="btn-ri btn-ri-red">HIRE ME FOR YOUR PROJECT <i class="bi bi-arrow-right"></i></a></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="ri-sec bg-d2">
+  <div class="container-fluid px-4 px-lg-5">
+    <p class="sec-tag reveal">What Clients Say</p>
+    <h2 class="sec-title mb-1 reveal reveal-d1">CLIENT <span style="color:var(--red)">TESTIMONIALS</span></h2>
+    <hr class="ri-div reveal reveal-d1">
+    <div id="testCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5500">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="row g-3">
+            <div class="col-md-4"><div class="test-card"><div class="test-quote">"</div><p style="color:var(--lgy);font-style:italic;font-size:15px;line-height:1.75" class="my-3">Raj delivered an absolutely stunning logo design for our brand. Professional and exactly what we envisioned.</p><div class="d-flex align-items-center gap-3"><div class="test-avatar">A</div><div><div style="font-family:var(--ff-c);font-weight:700;letter-spacing:1px">ABCD Brand</div><div style="font-size:12px;color:var(--gy)">Logo Client · 2026</div></div></div></div></div>
+            <div class="col-md-4"><div class="test-card"><div class="test-quote">"</div><p style="color:var(--lgy);font-style:italic;font-size:15px;line-height:1.75" class="my-3">The motion graphics Raj created were incredible. Smooth animations, perfect colors. Will definitely hire again!</p><div class="d-flex align-items-center gap-3"><div class="test-avatar">R</div><div><div style="font-family:var(--ff-c);font-weight:700;letter-spacing:1px">Rohit Sharma</div><div style="font-size:12px;color:var(--gy)">Product Promo Client</div></div></div></div></div>
+            <div class="col-md-4"><div class="test-card"><div class="test-quote">"</div><p style="color:var(--lgy);font-style:italic;font-size:15px;line-height:1.75" class="my-3">Amazing 2D animated explainer video. Responsive, creative, delivered on time. Highly recommended!</p><div class="d-flex align-items-center gap-3"><div class="test-avatar">P</div><div><div style="font-family:var(--ff-c);font-weight:700;letter-spacing:1px">Priya Mehta</div><div style="font-size:12px;color:var(--gy)">Animation Project Client</div></div></div></div></div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="row g-3">
+            <div class="col-md-4"><div class="test-card"><div class="test-quote">"</div><p style="color:var(--lgy);font-style:italic;font-size:15px;line-height:1.75" class="my-3">Raj's video editing skills are top-notch. He transformed raw footage into a stunning promo. Highly recommend!</p><div class="d-flex align-items-center gap-3"><div class="test-avatar">S</div><div><div style="font-family:var(--ff-c);font-weight:700;letter-spacing:1px">Suresh Kumar</div><div style="font-size:12px;color:var(--gy)">Video Editing Client</div></div></div></div></div>
+            <div class="col-md-4"><div class="test-card"><div class="test-quote">"</div><p style="color:var(--lgy);font-style:italic;font-size:15px;line-height:1.75" class="my-3">Creative, professional, deadline-oriented. Our social media engagement boosted significantly.</p><div class="d-flex align-items-center gap-3"><div class="test-avatar">N</div><div><div style="font-family:var(--ff-c);font-weight:700;letter-spacing:1px">Neha Gupta</div><div style="font-size:12px;color:var(--gy)">Social Media Client</div></div></div></div></div>
+            <div class="col-md-4"><div class="test-card"><div class="test-quote">"</div><p style="color:var(--lgy);font-style:italic;font-size:15px;line-height:1.75" class="my-3">Outstanding VFX work on our short film. After Effects skills are truly exceptional.</p><div class="d-flex align-items-center gap-3"><div class="test-avatar">V</div><div><div style="font-family:var(--ff-c);font-weight:700;letter-spacing:1px">Vivek Sharma</div><div style="font-size:12px;color:var(--gy)">VFX Project Client</div></div></div></div></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#testCarousel" data-bs-slide="prev" style="width:36px"><span class="carousel-control-prev-icon"></span></button>
+      <button class="carousel-control-next" type="button" data-bs-target="#testCarousel" data-bs-slide="next" style="width:36px"><span class="carousel-control-next-icon"></span></button>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="ri-footer">
+  <div class="container-fluid px-4 px-lg-5">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+      <img src="assets/images/logo 1.png" width="200"  alt=""/>
+<div class="footer-copy">© 2026 Mr. Raj Gupta. All Rights Reserved.</div>
+      <nav class="d-flex gap-3">
+        <a class="footer-link" href="index.html">Home</a>
+        <a class="footer-link" href="about.html">About</a>
+        <a class="footer-link" href="portfolio.html">Portfolio</a>
+        <a class="footer-link" href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;" onclick="closeVideoModal(event)">
+  <div style="position:relative;max-width:860px;width:92%;border:2px solid #ff0000;box-shadow:0 0 60px rgba(255,0,0,0.35);">
+    <button onclick="closeVideoModal()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:#fff;font-size:30px;cursor:pointer;line-height:1;">&times;</button>
+    <video id="modalVideo" controls style="width:100%;display:block;background:#000;" src=""></video>
+  </div>
+</div>
+
+<!-- YOUTUBE MODAL -->
+<div id="ytModal" onclick="closeYtModalOutside(event)">
+  <div id="ytModalInner">
+    <button id="ytModalClose" onclick="closeYtModal()">&times;</button>
+    <iframe id="ytFrame" src="" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function openYtModal(videoId, isShort) {
+  var embedUrl = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+  document.getElementById('ytFrame').src = embedUrl;
+  document.getElementById('ytModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeYtModal() {
+  document.getElementById('ytFrame').src = '';
+  document.getElementById('ytModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeYtModalOutside(e) {
+  if (e.target === document.getElementById('ytModal')) closeYtModal();
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeYtModal(); });
+
+function openVideoModal(card){
+  var src = card.getAttribute('data-video');
+  var modal = document.getElementById('videoModal');
+  var vid = document.getElementById('modalVideo');
+  vid.src = src;
+  modal.style.display = 'flex';
+  vid.play();
+  // pause the bg preview
+  var bg = card.querySelector('.port-video-bg');
+  if(bg) bg.pause();
+}
+function closeVideoModal(e){
+  if(e && e.target !== document.getElementById('videoModal') && e.type === 'click' && !e.target.closest('#videoModal > div') === false) return;
+  var modal = document.getElementById('videoModal');
+  var vid = document.getElementById('modalVideo');
+  vid.pause();
+  vid.src = '';
+  modal.style.display = 'none';
+  // resume all bg videos
+  document.querySelectorAll('.port-video-bg').forEach(function(v){ v.play(); });
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideoModal(); });
+</script>
+</body>
+</html>
